@@ -9,11 +9,13 @@ class TransactionsController <ApplicationController
         currency: "usd",
         card: token,
         description: current_user.email)
-      @sale = book.sales.create!()
-        buyer_email: current_user.email)
+
+      @sale = book.sales.create!(buyer_email: current_user.email)
         redirect_to pickup_url(guid: @sale.guid)
-      rescure Stripe::CardError => e
+
+      rescue Stripe::CardError => e
         @error = e
+
         redirect_to book_path(book), notice: @error
       end
   end
